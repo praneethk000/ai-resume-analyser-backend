@@ -7,7 +7,6 @@ import com.example.airesumeanalyserbackend.dto.response.ResumeResponseDto;
 import com.example.airesumeanalyserbackend.dto.response.ResumeUploadResponseDto;
 import com.example.airesumeanalyserbackend.models.Resume;
 import com.example.airesumeanalyserbackend.services.resume_service.ResumeService;
-import com.example.airesumeanalyserbackend.utils.PdfParsingUtil;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +36,7 @@ public class ResumeController {
     }
 
     @GetMapping("/v1/displayResumeByUser")
-    public ResponseEntity<List<Resume>> getResumesByUser(@RequestParam("userId") String userId) {
+    public ResponseEntity<List<ResumeResponseDto>> getResumesByUser(@RequestParam("userId") String userId) {
         return ResponseEntity.ok(resumeService.getResumesByUser(userId));
     }
 

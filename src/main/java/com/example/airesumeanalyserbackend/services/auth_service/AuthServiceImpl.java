@@ -36,7 +36,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponseDto register(RegisterRequestDto registerRequestDto) {
-        if (userRepository.findById(registerRequestDto.email()).isPresent()) {
+        if (userRepository.findByEmail(registerRequestDto.email()).isPresent()) {
             throw new ApiRequestException("Email already exists.");
         }
 
@@ -44,14 +44,14 @@ public class AuthServiceImpl implements AuthService {
         user.setUserId(uuidService.generateUUID());
         user.setUsername(registerRequestDto.username());
         user.setEmail(registerRequestDto.email());
-        user.setPassword(registerRequestDto.password());
+        user.setPassword(passwordEncoder.encode(registerRequestDto.password()));
         user.setCreatedAt(LocalDateTime.now());
 
         User savedUser = userRepository.save(user);
 
-        String jwtToken = jwtService.generateToken(savedUser.getUsername());
+        String jwtToken = jwtService.generateToken(savedUser.getEmail());
 
-        return new AuthResponseDto(jwtToken, savedUser.getUserId(), savedUser.getUsername());
+        return new AuthResponseDto(jwtToken, savedUser.getUserId(), savedUser.getDisplayName(), savedUser.getEmail());
     }
 
     @Override
@@ -65,9 +65,9 @@ public class AuthServiceImpl implements AuthService {
         User user = userRepository.findByEmail(loginRequestDto.email())
                 .orElseThrow(() -> new ApiRequestException("User not found."));
 
-        String jwtToken = jwtService.generateToken(user.getUsername());
+        String jwtToken = jwtService.generateToken(user.getEmail());
 
-        return new AuthResponseDto(jwtToken, user.getUserId(), user.getUsername());
+        return new AuthResponseDto(jwtToken, user.getUserId(), user.getDisplayName(), user.getEmail());
 
     }
 

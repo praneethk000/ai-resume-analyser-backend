@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ResumeAnalysisRepository extends JpaRepository<ResumeAnalysis, String> {
     List<ResumeAnalysis> findByResumeResumeId(String resumeResumeId);
+
+    List<ResumeAnalysis> findByResumeUserUserId(String resumeUserUserId);
 }

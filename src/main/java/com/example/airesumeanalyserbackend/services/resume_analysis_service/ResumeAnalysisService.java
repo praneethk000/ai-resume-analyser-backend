@@ -8,4 +8,5 @@ import java.util.List;
 public interface ResumeAnalysisService {
     ResumeAnalysisResponseDto analyseResume(String resumeId, String jobId);
     List<ResumeAnalysisResponseDto> getAnalysisByResumeId(String resumeId);
+    List<ResumeAnalysisResponseDto> getAnalysisByUserId(String userId);
 }

@@ -104,8 +104,33 @@ public class ResumeServiceImpl implements ResumeService {
     }
 
     @Override
-    public List<Resume> getResumesByUser(String userId) {
-        return resumeRepository.findResumesByUser_UserId(userId);
+    public List<ResumeResponseDto> getResumesByUser(String userId) {
+        return resumeRepository.findResumesByUser_UserId(userId).stream()
+                .map(resume -> {
+                    List<String> skillsList = resume.getResumeSkills().stream()
+                            .map(rs -> rs.getSkill().getSkillName())
+                            .toList();
+                    return new ResumeResponseDto(
+                            resume.getResumeId(),
+                            resume.getTitle(),
+                            resume.getFirstName(),
+                            resume.getLastName(),
+                            resume.getPhoneNumber(),
+                            resume.getEmail(),
+                            resume.getLinkedin(),
+                            resume.getGithub(),
+                            resume.getAddress(),
+                            resume.getCity(),
+                            resume.getState(),
+                            resume.getPincode(),
+                            resume.getNationality(),
+                            resume.getGender() != null ? resume.getGender().name() : null,
+                            resume.getDob(),
+                            resume.getResumeUrl(),
+                            resume.getResumeFileName(),
+                            skillsList);
+                })
+                .toList();
     }
 
     @Override

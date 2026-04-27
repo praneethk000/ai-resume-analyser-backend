@@ -2,7 +2,6 @@ package com.example.airesumeanalyserbackend.controllers;
 
 import com.example.airesumeanalyserbackend.dto.request.CreateJobDescriptionDto;
 import com.example.airesumeanalyserbackend.dto.response.JobDescriptionResponseDto;
-import com.example.airesumeanalyserbackend.models.JobDescription;
 import com.example.airesumeanalyserbackend.services.job_description_service.JobDescriptionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +18,14 @@ public class JobDescriptionController {
     }
 
     @PostMapping("/v1/createJobDescription")
-    public ResponseEntity<String> createJobDescription(@RequestBody CreateJobDescriptionDto createJobDescriptionDto){
-        jobDescriptionService.createJobDescription(createJobDescriptionDto);
-        return ResponseEntity.ok("Job Description Created Successfully");
+    public ResponseEntity<JobDescriptionResponseDto> createJobDescription(
+            @RequestBody CreateJobDescriptionDto createJobDescriptionDto) {
+        JobDescriptionResponseDto created = jobDescriptionService.createJobDescription(createJobDescriptionDto);
+        return ResponseEntity.ok(created);
     }
 
     @GetMapping("/v1/displayJobById")
-    public ResponseEntity<JobDescriptionResponseDto> getJobById(@RequestParam String jobId){
+    public ResponseEntity<JobDescriptionResponseDto> getJobById(@RequestParam String jobId) {
         return ResponseEntity.ok(jobDescriptionService.getJobById(jobId));
     }
 

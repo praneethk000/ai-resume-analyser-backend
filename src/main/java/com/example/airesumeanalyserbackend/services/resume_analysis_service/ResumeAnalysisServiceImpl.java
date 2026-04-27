@@ -104,6 +104,9 @@ public class ResumeAnalysisServiceImpl implements ResumeAnalysisService {
                 savedAnalysis.getResumeAnalysisId(),
                 savedAnalysis.getResume().getResumeId(),
                 savedAnalysis.getJobDescription().getJobId(),
+                savedAnalysis.getResume().getResumeFileName(),
+                savedAnalysis.getJobDescription().getJobTitle(),
+                savedAnalysis.getJobDescription().getCompanyName(),
                 savedAnalysis.getMatchScore(),
                 savedAnalysis.getMatchedSkills(),
                 savedAnalysis.getMissingSkills(),
@@ -119,6 +122,28 @@ public class ResumeAnalysisServiceImpl implements ResumeAnalysisService {
                         analysis.getResumeAnalysisId(),
                         analysis.getResume().getResumeId(),
                         analysis.getJobDescription().getJobId(),
+                        analysis.getResume().getResumeFileName(),
+                        analysis.getJobDescription().getJobTitle(),
+                        analysis.getJobDescription().getCompanyName(),
+                        analysis.getMatchScore(),
+                        analysis.getMatchedSkills(),
+                        analysis.getMissingSkills(),
+                        analysis.getSuggestions(),
+                        analysis.getCreatedAt()))
+                .toList();
+    }
+
+    @Override
+    public List<ResumeAnalysisResponseDto> getAnalysisByUserId(String userId) {
+        List<ResumeAnalysis> resumeAnalyses = resumeAnalysisRepository.findByResumeUserUserId(userId);
+        return resumeAnalyses.stream().map(
+                analysis -> new ResumeAnalysisResponseDto(
+                        analysis.getResumeAnalysisId(),
+                        analysis.getResume().getResumeId(),
+                        analysis.getJobDescription().getJobId(),
+                        analysis.getResume().getResumeFileName(),
+                        analysis.getJobDescription().getJobTitle(),
+                        analysis.getJobDescription().getCompanyName(),
                         analysis.getMatchScore(),
                         analysis.getMatchedSkills(),
                         analysis.getMissingSkills(),

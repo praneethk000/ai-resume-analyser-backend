@@ -28,6 +28,12 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String username;
 
+    // UserDetails.getUsername() must return the unique identifier (email) for Spring Security.
+    // Use getDisplayName() to get the actual human-readable username stored in the DB.
+    public String getDisplayName() {
+        return username;
+    }
+
     @Column(unique = true, nullable = false)
     private String email;
 

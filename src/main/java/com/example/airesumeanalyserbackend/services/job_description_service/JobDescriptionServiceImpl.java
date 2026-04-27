@@ -23,7 +23,7 @@ public class JobDescriptionServiceImpl implements JobDescriptionService{
     }
 
     @Override
-    public String createJobDescription(CreateJobDescriptionDto jobDescriptionDto) {
+    public JobDescriptionResponseDto createJobDescription(CreateJobDescriptionDto jobDescriptionDto) {
         if(jobDescriptionDto.jobDescriptionText() == null || jobDescriptionDto.jobDescriptionText().isBlank()){
             throw new ApiRequestException("Job description cannot be empty");
         }
@@ -41,7 +41,13 @@ public class JobDescriptionServiceImpl implements JobDescriptionService{
         job.setJobDescriptionText(jobDescriptionDto.jobDescriptionText());
         job.setCreatedAt(LocalDateTime.now());
         jobDescriptionRepository.save(job);
-        return "Job Description Created Successfully";
+        return new JobDescriptionResponseDto(
+                job.getJobId(),
+                job.getJobTitle(),
+                job.getCompanyName(),
+                job.getJobDescriptionText(),
+                job.getCreatedAt()
+        );
     }
 
     @Override

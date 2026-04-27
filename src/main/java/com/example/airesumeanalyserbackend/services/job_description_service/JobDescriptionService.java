@@ -6,7 +6,7 @@ import com.example.airesumeanalyserbackend.dto.response.JobDescriptionResponseDt
 import java.util.List;
 
 public interface JobDescriptionService {
-    String createJobDescription(CreateJobDescriptionDto jobDescriptionDto);
+    JobDescriptionResponseDto createJobDescription(CreateJobDescriptionDto jobDescriptionDto);
     JobDescriptionResponseDto getJobById(String jobId);
     List<JobDescriptionResponseDto> getAllJobs();
 

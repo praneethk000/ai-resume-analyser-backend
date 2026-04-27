@@ -26,4 +26,9 @@ public class ResumeAnalysisController {
     public ResponseEntity<List<ResumeAnalysisResponseDto>> displayAllAnalysisByResumeId(@RequestParam String resumeId) {
         return ResponseEntity.ok(resumeAnalysisService.getAnalysisByResumeId(resumeId));
     }
+
+    @GetMapping("/v1/displayAllAnalysisByUser")
+    public ResponseEntity<List<ResumeAnalysisResponseDto>> displayAllAnalysisByUserId(@RequestParam String userId) {
+        return ResponseEntity.ok(resumeAnalysisService.getAnalysisByUserId(userId));
+    }
 }

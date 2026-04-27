@@ -1,8 +1,6 @@
 package com.example.airesumeanalyserbackend.controllers;
 
-import com.example.airesumeanalyserbackend.dto.request.CreateUserDto;
 import com.example.airesumeanalyserbackend.dto.response.UserResponseDto;
-import com.example.airesumeanalyserbackend.models.User;
 import com.example.airesumeanalyserbackend.services.user_service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

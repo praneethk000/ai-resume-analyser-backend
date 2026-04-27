@@ -16,7 +16,7 @@ public interface ResumeService {
 
     ResumeResponseDto getResumeById(String resumeId);
 
-    List<Resume> getResumesByUser(String userId);
+    List<ResumeResponseDto> getResumesByUser(String userId);
 
     String updateResumeSkills(UpdateSkillsDto updateSkillsDto);
 
