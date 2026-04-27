@@ -68,4 +68,17 @@ public class ResumeController {
         }
     }
 
+    @PostMapping(value = "/v1/extractSkillsOnly", consumes = { "multipart/form-data" })
+    public ResponseEntity<List<String>> extractSkillsOnly(@RequestParam("file") MultipartFile file) {
+        try {
+            if (file.isEmpty()) {
+                return ResponseEntity.badRequest().build();
+            }
+            List<String> skills = resumeService.extractSkillsOnly(file);
+            return ResponseEntity.ok(skills);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
 }

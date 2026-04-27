@@ -170,6 +170,14 @@ public class ResumeServiceImpl implements ResumeService {
         return new ResumeUploadResponseDto(resume.getResumeId(), new ArrayList<>(mergedSkills));
     }
 
+    @Override
+    public List<String> extractSkillsOnly(MultipartFile file) throws Exception {
+        String parsedText = PdfParsingUtil.extractTextFromPdf(file);
+        List<String> aiSkills = openAiService.extractSkills(parsedText);
+        Set<String> mergedSkills = new HashSet<>(aiSkills);
+        return new ArrayList<>(mergedSkills);
+    }
+
     @Transactional
     @Override
     public String updateResumeSkills(UpdateSkillsDto updateSkillsDto) {

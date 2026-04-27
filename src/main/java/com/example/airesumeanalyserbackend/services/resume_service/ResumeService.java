@@ -23,4 +23,6 @@ public interface ResumeService {
     String updateResumeProfile(UpdateResumeProfileDto updateResumeProfileDto);
 
     ResumeUploadResponseDto uploadAndExtractSkills(MultipartFile file, String userId) throws Exception;
+
+    List<String> extractSkillsOnly(MultipartFile file) throws Exception;
 }
