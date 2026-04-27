@@ -100,6 +100,7 @@ public class ResumeServiceImpl implements ResumeService {
                 resume.getDob(),
                 resume.getResumeUrl(),
                 resume.getResumeFileName(),
+                resume.getResumeUploadedAt(),
                 skillsList);
     }
 
@@ -128,6 +129,7 @@ public class ResumeServiceImpl implements ResumeService {
                             resume.getDob(),
                             resume.getResumeUrl(),
                             resume.getResumeFileName(),
+                            resume.getResumeUploadedAt(),
                             skillsList);
                 })
                 .toList();
@@ -147,6 +149,7 @@ public class ResumeServiceImpl implements ResumeService {
         resume.setResumeId(uuidService.generateUUID());
         resume.setUser(user);
         resume.setTitle("Resume");
+        resume.setFirstName(user.getDisplayName());
         resume.setResumeFileName(file.getOriginalFilename());
         resume.setResumeParsedText(parsedText);
         resume.setResumeUploadedAt(LocalDateTime.now());

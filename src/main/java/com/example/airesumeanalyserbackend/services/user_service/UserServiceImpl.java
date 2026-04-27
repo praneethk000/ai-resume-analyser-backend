@@ -70,6 +70,7 @@ public class UserServiceImpl implements UserService {
                                 resume.getDob(),
                                 resume.getResumeUrl(),
                                 resume.getResumeFileName(),
+                                resume.getResumeUploadedAt(),
                                 resume.getResumeSkills().stream().map(rs -> rs.getSkill().getSkillName()).toList()))
                         .toList());
     }
@@ -101,6 +102,7 @@ public class UserServiceImpl implements UserService {
                                         resume.getDob(),
                                         resume.getResumeUrl(),
                                         resume.getResumeFileName(),
+                                        resume.getResumeUploadedAt(),
                                         resume.getResumeSkills().stream().map(rs -> rs.getSkill().getSkillName())
                                                 .toList()))
                                 .toList()))
