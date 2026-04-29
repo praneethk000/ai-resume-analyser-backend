@@ -13,7 +13,7 @@ import com.example.airesumeanalyserbackend.models.User;
 import com.example.airesumeanalyserbackend.repositories.ResumeRepository;
 import com.example.airesumeanalyserbackend.repositories.SkillRepository;
 import com.example.airesumeanalyserbackend.repositories.UserRepository;
-import com.example.airesumeanalyserbackend.services.ai_service.OpenAIServiceImpl;
+import com.example.airesumeanalyserbackend.services.ai_service.OpenAIService;
 import com.example.airesumeanalyserbackend.utils.PdfParsingUtil;
 import com.example.airesumeanalyserbackend.utils.UUIDService;
 import org.springframework.stereotype.Service;
@@ -32,11 +32,11 @@ public class ResumeServiceImpl implements ResumeService {
     private final ResumeRepository resumeRepository;
     private final UserRepository userRepository;
     private final UUIDService uuidService;
-    private final OpenAIServiceImpl openAiService;
+    private final OpenAIService openAiService;
     private final SkillRepository skillRepository;
 
     public ResumeServiceImpl(ResumeRepository resumeRepository, UserRepository userRepository, UUIDService uuidService,
-            OpenAIServiceImpl openAiService, SkillRepository skillRepository) {
+            OpenAIService openAiService, SkillRepository skillRepository) {
         this.resumeRepository = resumeRepository;
         this.userRepository = userRepository;
         this.uuidService = uuidService;

@@ -7,6 +7,7 @@ import com.example.airesumeanalyserbackend.exceptions.ApiRequestException;
 import com.example.airesumeanalyserbackend.models.User;
 import com.example.airesumeanalyserbackend.repositories.UserRepository;
 import com.example.airesumeanalyserbackend.utils.UUIDService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,10 +18,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UUIDService uuidService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, UUIDService uuidService) {
+    public UserServiceImpl(UserRepository userRepository, UUIDService uuidService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.uuidService = uuidService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -38,7 +41,7 @@ public class UserServiceImpl implements UserService {
         user.setUserId(uuidService.generateUUID());
         user.setUsername(createUserDto.username());
         user.setEmail(createUserDto.email());
-        user.setPassword(createUserDto.password());
+        user.setPassword(passwordEncoder.encode(createUserDto.password()));
         user.setCreatedAt(LocalDateTime.now());
         userRepository.save(user);
         return "User created successfully";
@@ -115,8 +118,10 @@ public class UserServiceImpl implements UserService {
             User user = new User();
             user.setUserId(uuidService.generateUUID());
             user.setEmail(email);
-            user.setUsername(name);
-            user.setPassword("OAUTH2_USER");
+            user.setUsername(name != null ? name : email);
+            // OAuth users don't have a password — store a BCrypt-encoded placeholder
+            // so the column constraint is satisfied and password-based login is rejected cleanly
+            user.setPassword(passwordEncoder.encode("OAUTH2_NO_PASSWORD_" + uuidService.generateUUID()));
             user.setCreatedAt(LocalDateTime.now());
             userRepository.save(user);
         }

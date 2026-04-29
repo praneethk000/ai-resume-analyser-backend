@@ -49,18 +49,16 @@ public class ResumeAnalysisServiceImpl implements ResumeAnalysisService {
         String resumeText = resume.getResumeParsedText();
         String jobText = job.getJobDescriptionText();
         if (resumeText == null || resumeText.isBlank()) {
-            throw new ApiRequestException("Resume not found");
+            throw new ApiRequestException("Resume has no parseable content. Please re-upload your resume.");
         }
         if (jobText == null || jobText.isBlank()) {
-            throw new ApiRequestException("Job not found");
+            throw new ApiRequestException("Job description has no parseable content.");
         }
 
         Set<String> resumeKeywords = resume.getResumeSkills().stream().map(rs -> rs.getSkill().getSkillName())
                 .collect(Collectors.toSet());
         Set<String> jobKeywords = new HashSet<>(openAIService.extractSkills(job.getJobDescriptionText()));
 
-        System.out.println("Final Resume Skills: " + resumeKeywords);
-        System.out.println("Final Job Skills: " + jobKeywords);
 
         // 3. Match keywords
         Set<String> matched = new HashSet<>();

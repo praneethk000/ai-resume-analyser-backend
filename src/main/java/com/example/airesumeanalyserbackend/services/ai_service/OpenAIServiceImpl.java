@@ -14,7 +14,7 @@ import java.util.Map;
 @Service
 public class OpenAIServiceImpl implements OpenAIService {
     private final WebClient webClient;
-    private final String apiKey;
+    // private final String apiKey; // DEAD FIELD — key is already baked into WebClient headers above; keeping it would hold the secret in memory unnecessarily
 
     public OpenAIServiceImpl(@Value("${github.models.api.key}") String apiKey) {
         this.webClient = WebClient.builder()
@@ -22,7 +22,7 @@ public class OpenAIServiceImpl implements OpenAIService {
                 .defaultHeader("Content-Type", "application/json")
                 .defaultHeader("Authorization", "Bearer " + apiKey)
                 .build();
-        this.apiKey = apiKey;
+        // this.apiKey = apiKey; // not stored — key only lives in the WebClient instance
     }
 
     @Cacheable(value = "openaiSkills", key = "#text.hashCode()")
@@ -56,7 +56,7 @@ public class OpenAIServiceImpl implements OpenAIService {
                 .retrieve()
                 .bodyToMono(Map.class)
                 .doOnError(WebClientResponseException.class, ex -> {
-                    System.err.println("OpenAI API Error Body: " + ex.getResponseBodyAsString());
+                    // Intentionally not logging the full error body to avoid leaking API details
                 })
                 .onErrorMap(WebClientResponseException.class, ex -> {
                     if (ex.getStatusCode().value() == 429) {
@@ -75,12 +75,10 @@ public class OpenAIServiceImpl implements OpenAIService {
         Map<String, Object> message = (Map<String, Object>) choices.get(0).get("message");
         String content = (String) message.get("content");
 
-        System.out.println("RAW OPENAI RESPONSE: " + content);
-
         String extracted = content.toLowerCase();
 
         return Arrays.stream(extracted
-                        .replaceAll("[^a-zA-Z0-9, ]", "")
+                        .replaceAll("[^a-zA-Z0-9, \\+#\\.-]", "")
                         .split(","))
                         .map(String::trim)
                         .filter(skill -> !skill.isEmpty())

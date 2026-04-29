@@ -71,8 +71,10 @@ public class SecurityConfig {
 
                 .oauth2Login(oauth -> oauth.successHandler(oAuth2SuccessHandler))
 
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                        .sessionFixation().none())
+                // IF_REQUIRED: Spring creates a session only when needed (e.g., OAuth2 code flow).
+                // For JWT API calls, no session is created because JwtAuthenticationFilter sets auth before the session is checked.
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
 
                 .authenticationProvider(authenticationProvider())
 
