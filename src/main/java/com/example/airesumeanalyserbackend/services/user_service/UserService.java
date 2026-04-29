@@ -7,6 +7,10 @@ import java.util.List;
 
 public interface UserService {
     String createUser(CreateUserDto createUserDto);
+
     UserResponseDto getUserById(String id);
+
     List<UserResponseDto> getAllUsers();
+
+    void processOAuthPostLogin(String email, String name);
 }

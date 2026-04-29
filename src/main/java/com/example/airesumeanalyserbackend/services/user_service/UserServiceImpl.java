@@ -108,4 +108,17 @@ public class UserServiceImpl implements UserService {
                                 .toList()))
                 .toList();
     }
+
+    @Override
+    public void processOAuthPostLogin(String email, String name) {
+        if (userRepository.findByEmail(email).isEmpty()) {
+            User user = new User();
+            user.setUserId(uuidService.generateUUID());
+            user.setEmail(email);
+            user.setUsername(name);
+            user.setPassword("OAUTH2_USER");
+            user.setCreatedAt(LocalDateTime.now());
+            userRepository.save(user);
+        }
+    }
 }
