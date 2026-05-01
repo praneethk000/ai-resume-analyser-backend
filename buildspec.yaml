@@ -32,8 +32,11 @@ phases:
       - echo $DOCKER_CONTAINER_NAME
       - echo printing imagedefinitions.json
       - cat imagedefinitions.json
+      - echo Writing Elastic Beanstalk Dockerrun file...
+      - printf '{"AWSEBDockerrunVersion":"1","Image":{"Name":"%s","Update":"true"},"Ports":[{"ContainerPort":8080}]}' $REPOSITORY_URI:latest > Dockerrun.aws.json
 
 artifacts:
   files:
     - imagedefinitions.json
+    - Dockerrun.aws.json
     - build/libs/ai-resume-analyser-backend-0.0.1-SNAPSHOT.jar
