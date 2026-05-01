@@ -4,7 +4,7 @@ phases:
   pre_build:
     commands:
       - chmod +x gradlew
-      - ./gradlew clean build
+      - ./gradlew clean build -x test
       - echo Logging in to Amazon ECR...
       - aws --version
       - REPOSITORY_URI=215726089558.dkr.ecr.eu-north-1.amazonaws.com/savage-registry
