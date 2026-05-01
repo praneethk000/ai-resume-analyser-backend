@@ -21,7 +21,11 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private final JwtService jwtService;
     private final UserService userService;
 
-    private static final String FRONTEND_REDIRECT_URL = "http://localhost:3000/auth/callback";
+    // Read from environment variable FRONTEND_URL; falls back to localhost for local dev
+    private final String frontendRedirectUrl =
+        System.getenv("FRONTEND_URL") != null
+            ? System.getenv("FRONTEND_URL") + "/auth/callback"
+            : "http://localhost:3000/auth/callback";
 
     public OAuth2SuccessHandler(JwtService jwtService, UserService userService) {
         this.jwtService = jwtService;
@@ -39,7 +43,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         String jwt = jwtService.generateToken(email);
 
-        String redirectUrl = FRONTEND_REDIRECT_URL + "?token=" + URLEncoder.encode(jwt, StandardCharsets.UTF_8);
+        String redirectUrl = frontendRedirectUrl + "?token=" + URLEncoder.encode(jwt, StandardCharsets.UTF_8);
 
         getRedirectStrategy().sendRedirect(request, response, redirectUrl);
 
